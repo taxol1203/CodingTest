@@ -1,0 +1,68 @@
+import java.util.*;
+
+class Solution {
+    public int solution(String dartResult) {
+        int answer = 0;
+        Stack<Integer> calBuf = new Stack<>();
+        char arr[] = dartResult.toCharArray();
+        for(int i = 0; i< arr.length; i++){
+	//만약 숫자가 10 일시
+            if(arr[i] == 49 && arr[i+1] == 48){
+                calBuf.push(10);
+                i = i + 2;
+            }
+	//숫자일 시
+            if(arr[i] > 47 && arr[i] < 58){
+                calBuf.push(arr[i]- '0');
+            }
+	//문자 S D T 일시
+            else if(arr[i] > 65 && arr[i] < 90){
+                int buf = calBuf.pop();
+                switch(arr[i]){
+                    case 'D':
+                        buf = buf * buf;
+                        break;
+                    case 'T':
+                        buf = buf * buf * buf;
+                        break;
+                }
+                calBuf.push(buf);
+            }
+	//* 과 # 일시
+	else if(arr[i] < 46){
+	    //만약 제일 앞에 있는 숫자에 *이나 #이 들어 올 시
+                if(calBuf.size() == 1){
+                    int firstVal  = calBuf.pop();
+                    switch(arr[i]){
+                    case '*':
+                        firstVal = firstVal * 2;
+                        break;
+                    case '#':
+                        firstVal = firstVal * -1;
+                        break;
+                    }
+                    calBuf.push(firstVal);
+                    continue;
+                }
+                int secondVal = calBuf.pop();
+                int firstVal  = calBuf.pop();
+                switch(arr[i]){
+                    case '*':
+                        firstVal = firstVal * 2;
+                        secondVal = secondVal * 2;
+                        break;
+                    case '#':
+                        secondVal = secondVal * -1;
+                        break;
+                }
+                calBuf.push(firstVal);
+                calBuf.push(secondVal);
+            }
+        }
+        //나머지를 더한다.
+        for(int i = 0; i < 3; i++){           
+            answer = answer + calBuf.pop();
+        }
+        return answer;
+    }
+}
