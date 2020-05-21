@@ -8,8 +8,6 @@ public class Main {
     public static void main(String []args) throws IOException {        
         
         Scanner scan = new Scanner(System.in);
-        ArrayList<Integer> list = new ArrayList<>();
-        Queue<Character> queue = new LinkedList<>();
         
         int step;
         step = scan.nextInt();
@@ -26,17 +24,8 @@ public class Main {
         boolean flag = false;
         int cal = 0;
         for(int i = 0; i < step; i++) {
-        	//처음 괄호가 반대 일 경우
-        	if(VPS[i].charAt(0) == ')') {
-        		System.out.println("NO");
-        		continue;
-        	}
-        	//마지막 괄호가 반대 일 경우
         	vpsSize = VPS[i].length();
-        	if(VPS[i].charAt(vpsSize - 1) == '(') {
-        		System.out.println("NO");
-        		continue;
-        	}
+        	
         	for(int j = 0; j < vpsSize; j++) {
         		if(VPS[i].charAt(j) == '(') {
         			left++;
@@ -46,17 +35,22 @@ public class Main {
         			right++;
         			cal--;
         		}
+        		//만약 왼쪽보다 오른쪽이 많이 나오면, no 이다.
         		if(cal < 0) {
         			System.out.println("NO");
         			flag = true;
+        			cal = 0;
         			break;
         		}
         	}
+        	cal = 0;
         	if(flag) {
         		flag = false;
+        		left = 0;
+            	right = 0;
         		continue;
         	}
-        	
+        	//왼쪽 괄호와 오른쪽 괄호의 개수가 같으면 Yes else NO
         	if(left == right) {
         		System.out.println("YES");
         	}else {
