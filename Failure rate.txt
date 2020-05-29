@@ -1,0 +1,49 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(int N, int[] stages) {
+        int[] answer = new int[N];
+        int answerIndex = 0;
+        double personInstage = 0.0;
+        double personNum = stages.length;
+        double[] failure = new double[N + 1];
+        for(int i = 1 ; i <= N ; i++){
+            personInstage = 0.0;
+            for(int j = 0; j < stages.length; j++){
+                if(stages[j] == i){
+                    personInstage++;
+                } 
+            }
+            //분모가 0일 때
+            if(personNum == 0){
+                failure[i] = 0;
+                continue;
+            }
+            failure[i] = personInstage/personNum;
+            personNum = personNum - personInstage;
+        }
+        //for(int i = 1; i < failure.length; i++){
+        //    System.out.print(failure[i]);
+        //    System.out.print(" ");
+        //}
+        //System.out.println();
+        
+        for(int i = 1; i < failure.length; i++){
+            double max = 0;
+            max = failure[1];
+            int maxIndex = 0;
+            maxIndex = 1;
+            for(int j = 1; j < failure.length; j++){
+                if(max < failure[j]){
+                    max = failure[j];
+                    maxIndex = j;
+                }
+            }
+            System.out.print(maxIndex);
+            failure[maxIndex] = -1.0;
+            answer[answerIndex] = maxIndex;
+            answerIndex++;
+        }
+        return answer;
+    }
+}
